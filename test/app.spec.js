@@ -7,3 +7,12 @@ describe('App', () => {
       .expect(200, 'Hello, Image Recipe Server!');
   });
 });
+
+describe('Upload Route', () => {
+  const route = '/api/upload';
+  it('POST /api/upload responds with 400 when no file is uploaded', () => {
+    return supertest(app)
+      .post(route)
+      .expect(400);
+  });
+});
