@@ -24,7 +24,7 @@ app.use(fileUpload());
 
 app.use('/api/upload', uploadRouter);
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Hello, Image Recipe Server!');
 });
 
