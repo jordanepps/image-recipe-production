@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 const fileUpload = require('express-fileupload');
 const { NODE_ENV } = require('./config');
 
@@ -28,5 +29,13 @@ app.get('/', (req, res) => {
 });
 
 app.use(errorHandler);
+
+if (NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 module.exports = app;
