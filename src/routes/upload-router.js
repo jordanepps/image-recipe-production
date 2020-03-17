@@ -11,7 +11,8 @@ function base64_encode(data) {
 
 uploadRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   //Check if a file is uploaded
-  if (!req.files) return res.status(400).json({ msg: 'No file uploaded' });
+  if (!req.files)
+    return res.status(400).json({ err: 'No file uploaded or image link' });
 
   const file = req.files.file;
   //   console.log('TEST', fs.readFileSync('package.json'));

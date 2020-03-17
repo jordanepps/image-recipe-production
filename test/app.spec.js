@@ -8,11 +8,14 @@ describe('App', () => {
   });
 });
 
-describe('Upload Route', () => {
+describe('Upload Endpoint', () => {
   const route = '/api/upload';
-  it('POST /api/upload responds with 400 when no file is uploaded', () => {
-    return supertest(app)
-      .post(route)
-      .expect(400);
+
+  describe('POST /api/upload', () => {
+    it('responds with 400 when no file is uploaded', () => {
+      return supertest(app)
+        .post(route)
+        .expect(400, { err: 'No file uploaded or image link' });
+    });
   });
 });
