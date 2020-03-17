@@ -12,7 +12,7 @@ describe('Upload Endpoint', () => {
   const route = '/api/upload';
 
   describe('POST /api/upload', () => {
-    it('responds with 400 when no file is uploaded', () => {
+    it('responds with 400 when no file is uploaded or image link provided', () => {
       return supertest(app)
         .post(route)
         .expect(400, { err: 'No file uploaded or image link' });

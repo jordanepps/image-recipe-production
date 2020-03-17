@@ -15,8 +15,6 @@ uploadRouter.route('/').post(jsonBodyParser, (req, res, next) => {
     return res.status(400).json({ err: 'No file uploaded or image link' });
 
   const file = req.files.file;
-  //   console.log('TEST', fs.readFileSync('package.json'));
-  //   console.log('FILE', file.data);
 
   const bytes = base64_encode(file.data);
 
