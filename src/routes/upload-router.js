@@ -1,5 +1,11 @@
 const express = require('express');
 const fs = require('fs');
+const Clarifai = require('clarifai');
+const { CLARIFAI_KEY } = require('../config');
+
+const app = new Clarifai.App({
+  apiKey: CLARIFAI_KEY
+});
 
 const uploadRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -18,7 +24,16 @@ uploadRouter.route('/').post(jsonBodyParser, (req, res, next) => {
 
   const bytes = base64_encode(file.data);
 
-  res.json({ msg: 'done', bytes });
+  app.models.predict('bd367be194cf45149e75f01d59f77ba7', bytes).then(
+    function(response) {
+      // do something with response
+      res.json({ response });
+    },
+    function(err) {
+      // there was an error
+      res.status(400).json({ err });
+    }
+  );
 });
 
 module.exports = uploadRouter;
