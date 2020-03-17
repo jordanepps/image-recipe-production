@@ -12,7 +12,16 @@ const jsonBodyParser = express.json();
 
 function base64_encode(data) {
   // convert binary data to base64 encoded string
-  return new Buffer(data).toString('base64');
+  return Buffer.from(data).toString('base64');
+}
+
+function parseData(res) {
+  // get array output of of response
+  const data = res.outputs[0].data.concepts;
+  return data.map(ingredient => ({
+    name: ingredient.name,
+    prob: Number(ingredient.value.toFixed(3))
+  }));
 }
 
 uploadRouter.route('/').post(jsonBodyParser, (req, res, next) => {
@@ -27,7 +36,7 @@ uploadRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   app.models.predict('bd367be194cf45149e75f01d59f77ba7', bytes).then(
     function(response) {
       // do something with response
-      res.json({ response });
+      res.json({ response: parseData(response) });
     },
     function(err) {
       // there was an error
