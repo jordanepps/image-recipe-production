@@ -1,10 +1,11 @@
 import React from 'react';
 
 function ImageLink(props) {
-  const { setLink, disabled } = props;
+  const { setUrl, disabled } = props;
 
   const handleInputChange = e => {
-    setLink(e.target.value);
+    //check if link is valid
+    setUrl(e.target.value);
   };
 
   return (

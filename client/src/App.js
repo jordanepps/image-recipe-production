@@ -8,7 +8,7 @@ import ImageLink from './components/ImageLink';
 
 function App() {
   const [files, setFiles] = useState([]);
-  const [link, setLink] = useState('');
+  const [url, setUrl] = useState('');
   const [error, setError] = useState(null);
 
   const createFileFormData = files => {
@@ -17,24 +17,26 @@ function App() {
     return formData;
   };
 
-  const createLinkPostObj = link => ({ link });
+  const createLinkPostObj = url => ({ url });
 
   const handleUpload = async () => {
-    if (!files.length && !link.length) {
+    if (!files.length && !url.length) {
       setError('Please provide an image');
       return;
     }
 
-    //check if link is valid
-
     const postData = !files.length
-      ? createLinkPostObj(link)
+      ? createLinkPostObj(url)
       : createFileFormData(files);
+
+    const contentType = !files.length
+      ? 'application/json'
+      : 'multipart/form-data';
 
     try {
       const res = await axios.post('/api/upload', postData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': contentType
         }
       });
       console.log(res.data);
@@ -51,7 +53,7 @@ function App() {
     <div className="App">
       <h1>Image Recipe</h1>
       <ImageUploader files={files} setFiles={setFiles} />
-      <ImageLink setLink={setLink} disabled={!!files.length} />
+      <ImageLink setUrl={setUrl} disabled={!!files.length} />
       <button onClick={handleUpload}>Upload</button>
     </div>
   );

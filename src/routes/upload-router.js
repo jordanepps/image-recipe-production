@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const Clarifai = require('clarifai');
-const { CLARIFAI_KEY } = require('../config');
+const { CLARIFAI_KEY, FOOD_MODEL } = require('../config');
 
 const app = new Clarifai.App({
   apiKey: CLARIFAI_KEY
@@ -25,16 +25,21 @@ function parseData(res) {
 }
 
 uploadRouter.route('/').post(jsonBodyParser, (req, res, next) => {
-  console.log(req);
+  const { url } = req.body;
   //Check if a file is uploaded
-  if (!req.files)
-    return res.status(400).json({ err: 'No file uploaded or image link' });
+  if (!req.files && !url)
+    return res.status(400).json({ err: 'No file uploaded or image url' });
 
-  const file = req.files.file;
+  let data;
 
-  const bytes = base64_encode(file.data);
+  if (req.files) {
+    const file = req.files.file;
+    data = base64_encode(file.data);
+  }
 
-  app.models.predict('bd367be194cf45149e75f01d59f77ba7', bytes).then(
+  if (url) data = url;
+
+  app.models.predict(FOOD_MODEL, data).then(
     function(response) {
       // do something with response
       res.json({ response: parseData(response) });
