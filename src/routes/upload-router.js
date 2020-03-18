@@ -25,6 +25,7 @@ function parseData(res) {
 }
 
 uploadRouter.route('/').post(jsonBodyParser, (req, res, next) => {
+  console.log(req);
   //Check if a file is uploaded
   if (!req.files)
     return res.status(400).json({ err: 'No file uploaded or image link' });
