@@ -20,6 +20,7 @@ function App() {
   const createLinkPostObj = url => ({ url });
 
   const handleUpload = async () => {
+    setError(null);
     if (!files.length && !url.length) {
       setError('Please provide an image');
       return;
@@ -52,6 +53,7 @@ function App() {
   return (
     <div className="App">
       <h1>Image Recipe</h1>
+      {error && <h2>{error}</h2>}
       <ImageUploader files={files} setFiles={setFiles} />
       <ImageLink setUrl={setUrl} disabled={!!files.length} />
       <button onClick={handleUpload}>Upload</button>
